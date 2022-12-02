@@ -1,17 +1,30 @@
 use std::fs::File;
-use std::io::Result;
-use std::io::{BufRead, BufReader};
+use std::io::{self, BufRead};
 use std::path::Path;
+use std::vec::Vec;
 
 fn main() {
-    let raw_data = get_lines_from_file(get_input_file_name());
-    dbg!(raw_data);
+    let vec = parse_file("src/input1.txt");
+    println!("{:?}", vec);
 }
 
-fn get_lines_from_file(filename: impl AsRef<Path>) -> Result<Vec<String>> {
-    BufReader::new(File::open(filename)?).lines().collect()
+// Parse file with given name in parent directory into a vector of ints
+pub fn parse_file(name: &str) -> Vec<String> {
+    let mut vec = Vec::new();
+    if let Ok(lines) = read_lines(name) {
+        for line in lines {
+            if let Ok(ip) = line {
+                vec.push(ip);
+            }
+        }
+    }
+    vec
 }
 
-fn get_input_file_name() -> &'static str {
-    "src/input1.txt"
+fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
 }
