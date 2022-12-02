@@ -1,11 +1,13 @@
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
+use std::slice::Split;
+use std::str;
 use std::vec::Vec;
 
 fn main() {
-    let vec = parse_file("src/input1.txt");
-    println!("{:?}", vec);
+    let data = parse_file("src/input1.txt");
+    let mut iter = data.split("\n");
 }
 
 // Parse file with given name in parent directory into a vector of ints
